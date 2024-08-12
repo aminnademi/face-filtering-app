@@ -19,9 +19,9 @@ class FaceDetector:
             features.append((left_eye, right_eye, nose))
         return features
 
-    def is_frontface(self, features):
+    def is_frontface(self, features, eye_threshold=20, nose_threshold=20):
         for i in features:
             left_eye, right_eye, nose = i
-            if abs(left_eye[0] - right_eye[0]) < 10 and abs((left_eye[1] + right_eye[1]) / 2 - nose[1]) < 10:
+            if abs(left_eye[0] - right_eye[0]) < eye_threshold and abs((left_eye[1] + right_eye[1]) / 2 - nose[1]) < nose_threshold:
                 return True
         return False
