@@ -8,7 +8,6 @@ class FaceDetector:
         pass
 
     def detect_faces(self, image_path: str):
-        # Detect faces using RetinaFace
         faces = RetinaFace.detect_faces(image_path)
         return faces
 
@@ -43,7 +42,7 @@ class FaceDetector:
                 'eye_nose_diff': eye_nose_diff,
                 'mouth_nose_diff': mouth_nose_diff,
             }
-            # Check conditions
+
             conditions = {
                 'eye_distance': eye_distance > eye_threshold,
                 'nose_to_eye_mid': nose_to_eye_mid < nose_threshold,
@@ -51,7 +50,6 @@ class FaceDetector:
                 'mouth_nose_diff': mouth_nose_diff < eye_threshold
             }
             
-            # Overall decision
             is_front = all(conditions.values())
             
             return is_front, calculations, conditions 
@@ -64,17 +62,14 @@ class FaceDetector:
         for feature in features:
             left_eye, right_eye, nose, mouth_left, mouth_right, bbox = feature
 
-            # Draw bounding box
             cv2.rectangle(img_rgb, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255, 0, 0), 2)
 
-            # Draw landmarks
             cv2.circle(img_rgb, tuple(map(int, left_eye)), 5, (0, 255, 0), -1)
             cv2.circle(img_rgb, tuple(map(int, right_eye)), 5, (0, 255, 0), -1)
             cv2.circle(img_rgb, tuple(map(int, nose)), 5, (0, 255, 0), -1)
             cv2.circle(img_rgb, tuple(map(int, mouth_left)), 5, (0, 255, 0), -1)
             cv2.circle(img_rgb, tuple(map(int, mouth_right)), 5, (0, 255, 0), -1)
 
-        # Display the image
         plt.figure(figsize=(10, 10))
         plt.imshow(img_rgb)
         plt.axis('off')

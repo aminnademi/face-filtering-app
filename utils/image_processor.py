@@ -5,9 +5,16 @@ class ImageProcessor:
     def __init__(self):
         pass
 
-    def is_bnw(self, image_path: str) -> bool:
-        image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-        return image is None or len(image.shape) == 2
+    def is_bnw(self, image_path: str, bnw_threshold: int = 5) -> bool:
+        image = cv2.imread(image_path)
+
+        grayscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        grayscale_bgr = cv2.cvtColor(grayscale_image, cv2.COLOR_GRAY2BGR)
+
+        mean_diff = np.mean(cv2.absdiff(image, grayscale_bgr))
+
+        return mean_diff < bnw_threshold
 
     def save(self, image: np.ndarray, output_path: str):
         cv2.imwrite(output_path, image)
